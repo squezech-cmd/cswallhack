@@ -1,0 +1,26 @@
+{
+  "name": "burger-shift-team-rush-inspired",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A cooperative first-person burger kitchen game inspired by Burger Shift: Team Rush.",
+  "scripts": {
+    "dev": "node server/index.js",
+    "build": "vite build",
+    "start": "NODE_ENV=production node server/index.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@fontsource/manrope": "^5.2.6",
+    "@fontsource/oswald": "^5.2.6",
+    "@fontsource/roboto-mono": "^5.2.6",
+    "express": "^5.1.0",
+    "lucide": "^0.468.0",
+    "three": "^0.177.0",
+    "ws": "^8.18.2"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  },
+  "engines": { "node": ">=20" }
+}

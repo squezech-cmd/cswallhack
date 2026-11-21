@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#142b27" />
+    <meta name="description" content="Кооперативная игра про самую суматошную смену в бургерной." />
+    <title>Burger Shift — Team Rush</title>
+  </head>
+  <body>
+    <div id="app">
+      <section class="home" id="home">
+        <div class="home-background"></div>
+        <div class="home-grain"></div>
+        <header class="site-header">
+          <button class="brand" id="brand-home" aria-label="Burger Shift — главная">
+            <span class="brand-mark"><span class="brand-bun"></span><span class="brand-filling"></span><span class="brand-bottom"></span></span>
+            <span class="brand-name">BURGER<span>SHIFT<span class="brand-dot">.</span></span></span>
+          </button>
+          <nav class="header-nav" aria-label="Навигация">
+            <span class="nav-active">ГЛАВНАЯ</span>
+            <button data-action="home-help">КАК ИГРАТЬ</button>
+            <button data-action="about">ОБ ИГРЕ</button>
+          </nav>
+          <div class="header-right">
+            <span class="server-status"><span class="status-dot"></span><span id="connection-label">ПОДКЛЮЧЕНИЕ</span></span>
+            <button class="sound-button" data-action="sound" aria-label="Включить или выключить звук"><i data-lucide="volume-2"></i></button>
+          </div>
+        </header>
+
+        <main class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-line"></span> ДОБРО ПОЖАЛОВАТЬ В КОМАНДУ <span class="eyebrow-spark">✳</span></div>
+            <h1>ПОРА<br>НА <span>СМЕНУ<span class="heading-dot">.</span></span></h1>
+            <p class="hero-description">Горячие заказы, сочные бургеры и ни минуты на передышку. Готовы к самой вкусной суматохе?</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" data-action="solo"><span class="btn-icon"><i data-lucide="play" fill="currentColor"></i></span><span>ИГРАТЬ ОДНОМУ<small>НАЧАТЬ НОВУЮ СМЕНУ</small></span><i class="btn-arrow" data-lucide="arrow-up-right"></i></button>
+              <button class="btn btn-secondary" data-action="multiplayer"><i data-lucide="users-round"></i><span>ИГРАТЬ С ДРУЗЬЯМИ<small>СОЗДАТЬ ЛОББИ ИЛИ ВОЙТИ ПО ID</small></span><i class="btn-arrow" data-lucide="arrow-up-right"></i></button>
+            </div>
+            <div class="hero-under"><span class="mini-stars">✦ ✦ ✦ ✦ ✦</span><span>ХОРОШАЯ ЕДА. ОТЛИЧНАЯ КОМАНДА.</span></div>
+          </div>
+          <div class="hero-side-label"><span>ЕСТЬ ЗАКАЗ!</span><span class="side-line"></span><span>01 / 03</span></div>
+          <div class="hero-note" aria-label="Сегодня в меню">
+            <div class="note-top"><span>THE DAILY SPECIAL</span><span>✳</span></div>
+            <div class="note-body"><span class="note-label">СЕГОДНЯ В МЕНЮ</span><strong>БУРГЕР<br>И ХОРОШЕЕ<br>НАСТРОЕНИЕ<span>!</span></strong><div class="note-bottom"><span>СДЕЛАНО С ЛЮБОВЬЮ</span><span>♥</span></div></div>
+          </div>
+          <div class="hero-image-caption"><span class="caption-dot"></span> ПРИГОТОВЛЕНО С ЛЮБОВЬЮ <span class="caption-separator">/</span> ПОДАНО С ХАРАКТЕРОМ</div>
+        </main>
+
+        <div class="feature-strip">
+          <div class="feature-intro"><span class="feature-overline">ОДНА КУХНЯ. МНОГО ХАОСА.</span><strong>ЛУЧШЕ<br><em>ВМЕСТЕ.</em></strong><span class="feature-intro-arrow">↗</span></div>
+          <div class="feature"><span class="feature-icon"><i data-lucide="users-round"></i></span><span><strong>ДО 8 ИГРОКОВ</strong><small>Соберите свою команду</small></span><span class="feature-number">01</span></div>
+          <div class="feature"><span class="feature-icon"><i data-lucide="chef-hat"></i></span><span><strong>ОДНА КУХНЯ</strong><small>Готовьте плечом к плечу</small></span><span class="feature-number">02</span></div>
+          <div class="feature"><span class="feature-icon"><i data-lucide="flame"></i></span><span><strong>МНОГО ЗАКАЗОВ</strong><small>Успейте до закрытия</small></span><span class="feature-number">03</span></div>
+        </div>
+        <footer class="site-footer"><span>© 2026 BURGER SHIFT FAN PROJECT</span><span>СДЕЛАНО ДЛЯ ТЕХ, КТО ЛЮБИТ БУРГЕРЫ <span class="footer-heart">♥</span></span><span>РУССКИЙ <i data-lucide="chevron-down"></i></span></footer>
+      </section>
+
+      <section id="game-screen" class="game-screen hidden" aria-label="Игра">
+        <div id="game-canvas" class="game-canvas"></div>
+        <div class="game-vignette"></div>
+        <div class="game-hud" id="game-hud">
+          <div class="hud-top">
+            <div class="hud-brand"><span class="hud-brand-icon">B<span>•</span></span><span><strong>BURGER SHIFT</strong><small id="shift-label">СМЕНА 01 <b>●</b> ОТКРЫТО</small></span></div>
+            <div class="hud-timer"><span class="timer-icon"><i data-lucide="clock-3"></i></span><span><small>ДО ЗАКРЫТИЯ</small><strong id="time-left">04:00</strong></span></div>
+            <div class="hud-top-right"><div class="money-pill"><i data-lucide="coins"></i><span id="money-value">$0</span></div><button class="room-pill" data-action="copy-code" title="Скопировать код лобби"><span>ЛОББИ</span> <b id="hud-room-code">------</b><i data-lucide="copy"></i></button><button class="hud-help" data-action="game-help" title="Помощь"><i data-lucide="help-circle"></i></button></div>
+          </div>
+          <div class="event-banner hidden" id="event-banner"></div>
+          <div class="orders-panel"><div class="orders-heading"><span><span class="orders-dot"></span> ЗАКАЗЫ</span><span id="order-count">0 / 4</span></div><div id="orders-list" class="orders-list"></div><div class="orders-note">СЛЕДИТЕ ЗА ВРЕМЕНЕМ <span>↗</span></div></div>
+          <div class="crosshair"><span></span></div>
+          <div class="interaction-prompt hidden" id="interaction-prompt"><span class="keycap keycap-large">E</span><span><small id="interaction-station">ГРИЛЬ</small><strong id="interaction-text">Взаимодействовать</strong></span></div>
+          <div class="hud-bottom-left">
+            <div class="crew-title"><i data-lucide="users-round"></i> КОМАНДА <span id="crew-count">1 / 8</span></div><div id="crew-list" class="crew-list"></div>
+            <div id="chat-feed" class="chat-feed"></div>
+            <div class="chat-hint"><span>ENTER</span> ЧАТ <span class="hint-sep">·</span> <span>H</span> РЕЦЕПТЫ</div>
+          </div>
+          <div class="hud-bottom-right">
+            <div class="minimap"><div class="map-heading"><span>КУХНЯ</span><span>✳</span></div><div class="map-inner" id="map-inner"><div class="map-player" id="map-player"></div></div><div class="map-legend"><span><i class="map-dot hot"></i> ГОТОВКА</span><span><i class="map-dot ready"></i> ВЫДАЧА</span></div></div>
+            <div class="held-card"><div class="held-emoji" id="held-emoji"></div><div><small>В РУКАХ</small><strong id="held-name">ПУСТО</strong></div><span class="held-discard">Q <i data-lucide="trash-2"></i></span></div>
+          </div>
+          <div class="touch-controls"><div class="touch-dpad"><button data-touch="KeyW">▲</button><div><button data-touch="KeyA">◀</button><button data-touch="KeyS">▼</button><button data-touch="KeyD">▶</button></div></div><div class="touch-actions"><button data-action="touch-interact">E<br><small>ВЗЯТЬ</small></button><button data-action="touch-discard">Q<br><small>ВЫБРОСИТЬ</small></button></div></div>
+        </div>
+        <div id="game-overlay" class="game-overlay hidden"></div>
+      </section>
+      <div id="modal-root"></div>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
