@@ -27,7 +27,7 @@ async function createWindow() {
   const win = new BrowserWindow({
     width: 1440, height: 860,
     backgroundColor: '#04060a',
-    title: 'DEEP SALVAGE',
+    title: 'Башни и руны',
     autoHideMenuBar: true,
     webPreferences: { contextIsolation: true, nodeIntegration: false },
   });

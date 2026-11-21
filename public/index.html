@@ -1,114 +1,59 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DEEP SALVAGE — кооп-хоррор</title>
-<link rel="stylesheet" href="/style.css" />
-<script type="importmap">
-{ "imports": { "three": "/vendor/three.module.js" } }
-</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d1320" />
+  <title>Башни и руны — карточная арена</title>
+  <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-<canvas id="game"></canvas>
+  <main id="app">
+    <section id="home" class="screen active">
+      <header class="topbar"><div class="brand"><span class="brand-mark">♜</span><span>БАШНИ <i>&</i> РУНЫ</span></div><button id="collection-open" class="quiet-button">МОЯ КОЛОДА <span>↗</span></button></header>
+      <div class="home-layout">
+        <section class="hero">
+          <div class="eyebrow"><span class="live-dot"></span> АРЕНА ОТКРЫТА · СЕЗОН I</div>
+          <h1>ТВОЯ ТАКТИКА.<br /><em>ТВОЯ ПОБЕДА.</em></h1>
+          <p>Собери колоду, управляй энергией и защити башню. Сражайся с друзьями или проверь себя против соперников с разным характером.</p>
+          <div class="hero-stats"><div><b>24</b><small>УНИКАЛЬНЫЕ КАРТЫ</small></div><span></span><div><b>3</b><small>ЛИНИИ СРАЖЕНИЯ</small></div><span></span><div><b>∞</b><small>ТАКТИК</small></div></div>
+        </section>
+        <section class="play-card">
+          <div class="play-card-head"><div><div class="eyebrow">ВЫБЕРИ РЕЖИМ</div><h2>В бой</h2></div><div class="crest">✦</div></div>
+          <div class="mode-tabs"><button class="mode-tab selected" data-mode="bot">С БОТОМ</button><button class="mode-tab" data-mode="friend">С ДРУГОМ</button></div>
+          <div id="bot-settings" class="mode-panel">
+            <label class="field-label" for="difficulty">УРОВЕНЬ СОПЕРНИКА</label>
+            <div class="difficulty-row"><button class="difficulty selected" data-difficulty="easy"><span>🌿</span><b>Разминка</b><small>Для знакомства</small></button><button class="difficulty" data-difficulty="normal"><span>⚔</span><b>Тактик</b><small>Уверенный бой</small></button><button class="difficulty" data-difficulty="hard"><span>🔥</span><b>Грандмастер</b><small>Без пощады</small></button></div>
+            <button id="bot-play" class="primary-button">НАЧАТЬ БОЙ <span>→</span></button>
+          </div>
+          <div id="friend-settings" class="mode-panel hidden">
+            <label class="field-label" for="player-name">ТВОЁ ИМЯ</label><input id="player-name" class="text-field" maxlength="16" placeholder="Страж арены" />
+            <label class="field-label room-label" for="room-code">КОД КОМНАТЫ</label><div class="room-entry"><input id="room-code" class="text-field" maxlength="8" placeholder="Например, RUNE42" /><button id="join-room" class="primary-button">СОЗДАТЬ / ВОЙТИ <span>→</span></button></div>
+            <p class="micro-copy">Введи одинаковый код с другом. Комната начнётся, когда оба будете готовы.</p>
+          </div>
+          <div id="connection-status" class="status-line" aria-live="polite"></div>
+        </section>
+      </div>
+      <footer class="home-footer"><span>БЕСПЛАТНАЯ ВЕБ-АРЕНА</span><span>·</span><span>ИГРАЙ В ОДНОМ БРАУЗЕРЕ ИЛИ ПО СЕТИ</span><span class="footer-right">СТРАТЕГИЯ РЕШАЕТ</span></footer>
+    </section>
 
-<!-- Пост-эффекты через CSS -->
-<div id="vignette"></div>
-<div id="grain"></div>
-<div id="damage"></div>
+    <section id="battle" class="screen battle-screen">
+      <header class="battle-top"><button id="leave-battle" class="back-button">← <span>ВЫЙТИ</span></button><div class="match-title"><span class="match-icon">♜</span><div><b>АРЕНА РУН</b><small id="match-subtitle">БОЙ С БОТОМ</small></div></div><div class="battle-status"><span id="room-label">КОМНАТА —</span><span id="connection-dot" class="connection-dot"></span></div></header>
+      <div class="battle-layout">
+        <aside class="side-score enemy-score"><div class="player-name-row"><span class="player-avatar enemy-avatar">♞</span><div><b id="enemy-name">Соперник</b><small>ЗАЩИТНИК</small></div></div><div class="tower-score"><span>♜</span><b id="enemy-king-hp">5000</b><small>ЦЕНТРАЛЬНАЯ</small></div><div class="mini-towers"><div><span>◈</span><b id="enemy-left-hp">2800</b></div><div><span>◈</span><b id="enemy-right-hp">2800</b></div></div></aside>
+        <section class="arena-wrap"><div class="arena-frame"><div class="arena-meta"><span id="opponent-tag">ПРОТИВНИК</span><div class="timer-pill"><span class="timer-gem">◆</span><b id="timer">03:00</b></div><span id="match-state-label">БОЙ</span></div><canvas id="arena" aria-label="Игровая арена. Выбери карту и нажми на свою половину поля."></canvas><div class="lane-label lane-left">ЗАПАДНАЯ ЛИНИЯ</div><div class="lane-label lane-mid">ЦЕНТР</div><div class="lane-label lane-right">ВОСТОЧНАЯ ЛИНИЯ</div><div id="toast" class="toast"></div></div><div class="arena-instructions"><span>① ВЫБЕРИ КАРТУ</span><i>→</i><span>② НАЖМИ НА СВОЮ ПОЛОВИНУ АРЕНЫ</span></div></section>
+        <aside class="side-score own-score"><div class="player-name-row"><span class="player-avatar own-avatar">♜</span><div><b id="own-name">Ты</b><small>ТВОЯ КРЕПОСТЬ</small></div></div><div class="tower-score"><span>♜</span><b id="own-king-hp">5000</b><small>ЦЕНТРАЛЬНАЯ</small></div><div class="mini-towers"><div><span>◈</span><b id="own-left-hp">2800</b></div><div><span>◈</span><b id="own-right-hp">2800</b></div></div><div class="energy-box"><div class="energy-label"><span>РУННАЯ ЭНЕРГИЯ</span><b><span id="elixir">5</span><small>/ 10</small></b></div><div id="energy-bar" class="energy-bar"></div></div></aside>
+      </div>
+      <div class="hand-panel"><div class="hand-topline"><span>ТВОЯ РУКА <small>· ВЫБЕРИ КАРТУ, ЗАТЕМ МЕСТО</small></span><button id="deck-quick" class="deck-quick">КОЛОДА <span>↗</span></button></div><div id="hand" class="hand"></div><div class="next-card"><span>СЛЕДУЮЩАЯ</span><div id="next-card"></div></div></div>
+    </section>
 
-<!-- HUD -->
-<div id="hud" class="hidden">
-  <div id="topleft">
-    <div class="stat">
-      <div class="stat-label">ДОБЫЧА</div>
-      <div class="bar"><div id="quota-fill"></div></div>
-      <div id="quota-text" class="mono">$0 / $320</div>
-    </div>
-    <div class="stat hp">
-      <div class="stat-label">СОСТОЯНИЕ</div>
-      <div class="bar"><div id="hp-fill"></div></div>
-      <div id="hp-text" class="mono">100</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">ДЫХАНИЕ</div>
-      <div class="bar"><div id="stamina-fill"></div></div>
-    </div>
-  </div>
+    <section id="collection" class="screen collection-screen">
+      <header class="topbar"><button id="collection-back" class="back-button">← <span>НАЗАД</span></button><div class="brand"><span class="brand-mark">♜</span><span>МОЯ КОЛОДА</span></div><div class="deck-count"><b id="deck-count">8</b><span>/ 8 ВЫБРАНО</span></div></header>
+      <div class="collection-content"><div class="collection-heading"><div class="eyebrow">ТВОЙ АРСЕНАЛ · ВСЕ КАРТЫ ДОСТУПНЫ</div><h2>Собери свою стратегию</h2><p>Выбери ровно 8 карт. Нажми на карту, чтобы добавить её в колоду или убрать.</p></div><div id="deck-strip" class="deck-strip"></div><div class="collection-toolbar"><span id="card-total">24 КАРТЫ</span><div class="filters"><button class="filter selected" data-filter="all">ВСЕ</button><button class="filter" data-filter="unit">ВОИНЫ</button><button class="filter" data-filter="spell">ЗАКЛИНАНИЯ</button><button class="filter" data-filter="building">ПОСТРОЙКИ</button></div></div><div id="collection-grid" class="collection-grid"></div></div>
+    </section>
 
-  <div id="topright">
-    <div id="timer" class="mono">12:00</div>
-    <div id="round" class="mono">СМЕНА 1</div>
-    <div id="room-badge" class="mono">КОМНАТА —</div>
-  </div>
-
-  <div id="team"></div>
-
-  <div id="crosshair"><span></span></div>
-  <div id="prompt" class="hidden"></div>
-  <div id="pad-progress" class="hidden">
-    <div class="pad-label mono">ЭВАКУАЦИЯ</div>
-    <div class="bar wide"><div id="pad-fill"></div></div>
-    <div class="pad-hint">стойте на платформе</div>
-  </div>
-
-  <div id="chatlog"></div>
-  <div id="chatinput" class="hidden">
-    <span class="mono">&gt;</span><input id="chat-field" maxlength="140" autocomplete="off" />
-  </div>
-
-  <div id="hint" class="mono">WASD — идти · Shift — бежать · Ctrl — красться · E — взять/эвакуировать · ЛКМ — бросить · F — фонарь · Enter — чат · Tab — бригада</div>
-  <div id="bigmap-hint" class="mono hidden">TAB</div>
-</div>
-
-<!-- Меню -->
-<div id="menu">
-  <div class="menu-inner">
-    <h1>DEEP<span>SALVAGE</span></h1>
-    <p class="sub">кооперативный физический хоррор · 1–4 сальважёра · тёмные уровни, хрупкая добыча, что-то ещё внизу</p>
-
-    <div id="menu-fields">
-      <label>ПОЗЫВНОЙ
-        <input id="name-input" maxlength="16" placeholder="Сальважер" autocomplete="off" />
-      </label>
-      <label>КОД КОМНАТЫ (одинаковый у друзей)
-        <input id="room-input" maxlength="8" placeholder="MAIN" autocomplete="off" />
-      </label>
-      <button id="play-btn">В ШАХТУ</button>
-      <div id="join-url" class="mono hidden"></div>
-    </div>
-
-    <div class="controls">
-      <div><b>WASD</b> движение</div><div><b>Shift</b> бег</div>
-      <div><b>Ctrl</b> красться (тише)</div><div><b>Space</b> прыжок</div>
-      <div><b>E</b> взять / положить в приёмник / поднять напарника</div>
-      <div><b>ЛКМ</b> швырнуть · <b>ПКМ</b> аккуратно положить</div>
-      <div><b>F</b> фонарь (свет = вас видно)</div><div><b>Enter</b> чат · <b>Tab</b> бригада</div>
-    </div>
-    <div class="foot mono">Версия 1.0 · сервер и клиент в одном репозитории · <span id="packs">моды: —</span></div>
-  </div>
-</div>
-
-<!-- Оверлеи раунда -->
-<div id="overlay" class="hidden">
-  <div class="panel">
-    <h2 id="ov-title">СМЕНА ЗАВЕРШЕНА</h2>
-    <p id="ov-text"></p>
-    <div id="ov-stats" class="mono"></div>
-    <button id="ov-btn" class="hidden">СЛЕДУЮЩАЯ СМЕНА</button>
-    <div id="ov-wait" class="mono hidden">ожидаем хоста…</div>
-  </div>
-</div>
-
-<div id="dead" class="hidden">
-  <div class="dead-inner">
-    <h2>ВАС БОЛЬШЕ НЕТ</h2>
-    <p id="dead-sub" class="mono">наблюдение</p>
-  </div>
-</div>
-
-<div id="loading">ЗАГРУЗКА ШАХТЫ…</div>
-
-<script type="module" src="/js/main.js"></script>
+    <div id="result-modal" class="modal hidden"><div class="result-card"><div id="result-icon" class="result-icon">✦</div><div class="eyebrow">ПОЕДИНОК ЗАВЕРШЁН</div><h2 id="result-title">ПОБЕДА!</h2><p id="result-copy">Твоя стратегия оказалась сильнее.</p><button id="rematch" class="primary-button">ЕЩЁ ОДИН БОЙ <span>→</span></button><button id="home-button" class="quiet-button">В МЕНЮ</button></div></div>
+  </main>
+  <script src="/js/app.js"></script>
 </body>
 </html>

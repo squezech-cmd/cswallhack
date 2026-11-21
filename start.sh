@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# DEEP SALVAGE — локальный запуск
+# Башни и руны — локальный запуск
 set -e
 cd "$(dirname "$0")"
 command -v node >/dev/null || { echo "Нужен Node.js 18+ (https://nodejs.org)"; exit 1; }
