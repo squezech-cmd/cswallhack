@@ -1,0 +1,45 @@
+{
+  "name": "deep-salvage",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DEEP SALVAGE - кооперативный физический хоррор-лутер (3D, мультиплеер, свои ассеты)",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "desktop": "electron .",
+    "dist:win": "electron-builder --win portable --x64",
+    "dist:linux": "electron-builder --linux AppImage"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "three": "^0.169.0",
+    "ws": "^8.18.0"
+  },
+  "optionalDependencies": {
+    "electron": "^32.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.deepsalvage.game",
+    "productName": "DeepSalvage",
+    "files": [
+      "server/**/*",
+      "public/**/*",
+      "mods/**/*",
+      "package.json"
+    ],
+    "extraMetadata": {
+      "main": "desktop/main.js"
+    },
+    "win": {
+      "target": [
+        "portable",
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}

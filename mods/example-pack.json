@@ -1,0 +1,12 @@
+{
+  "name": "Контент-пак: Реликвии шахты",
+  "author": "пример",
+  "monsterSpeed": 1.0,
+  "quotaScale": 1.0,
+  "items": [
+    { "shape": "gem", "name": "Ампула «Сигма»", "value": 240, "color": "#8dff6e", "w": 0.22, "h": 0.3 },
+    { "shape": "orb", "name": "Глаз надзирателя", "value": 190, "color": "#ff7a7a", "w": 0.28, "h": 0.52 },
+    { "shape": "statue", "name": "Идол смены", "value": 150, "color": "#d8b06a", "w": 0.36, "h": 0.66 },
+    { "shape": "tv", "name": "Полевой монитор", "value": 120, "color": "#6f7f8c", "w": 0.46, "h": 0.4 }
+  ]
+}

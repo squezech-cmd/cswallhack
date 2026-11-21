@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DEEP SALVAGE — кооп-хоррор</title>
+<link rel="stylesheet" href="/style.css" />
+<script type="importmap">
+{ "imports": { "three": "/vendor/three.module.js" } }
+</script>
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<!-- Пост-эффекты через CSS -->
+<div id="vignette"></div>
+<div id="grain"></div>
+<div id="damage"></div>
+
+<!-- HUD -->
+<div id="hud" class="hidden">
+  <div id="topleft">
+    <div class="stat">
+      <div class="stat-label">ДОБЫЧА</div>
+      <div class="bar"><div id="quota-fill"></div></div>
+      <div id="quota-text" class="mono">$0 / $320</div>
+    </div>
+    <div class="stat hp">
+      <div class="stat-label">СОСТОЯНИЕ</div>
+      <div class="bar"><div id="hp-fill"></div></div>
+      <div id="hp-text" class="mono">100</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">ДЫХАНИЕ</div>
+      <div class="bar"><div id="stamina-fill"></div></div>
+    </div>
+  </div>
+
+  <div id="topright">
+    <div id="timer" class="mono">12:00</div>
+    <div id="round" class="mono">СМЕНА 1</div>
+    <div id="room-badge" class="mono">КОМНАТА —</div>
+  </div>
+
+  <div id="team"></div>
+
+  <div id="crosshair"><span></span></div>
+  <div id="prompt" class="hidden"></div>
+  <div id="pad-progress" class="hidden">
+    <div class="pad-label mono">ЭВАКУАЦИЯ</div>
+    <div class="bar wide"><div id="pad-fill"></div></div>
+    <div class="pad-hint">стойте на платформе</div>
+  </div>
+
+  <div id="chatlog"></div>
+  <div id="chatinput" class="hidden">
+    <span class="mono">&gt;</span><input id="chat-field" maxlength="140" autocomplete="off" />
+  </div>
+
+  <div id="hint" class="mono">WASD — идти · Shift — бежать · Ctrl — красться · E — взять/эвакуировать · ЛКМ — бросить · F — фонарь · Enter — чат · Tab — бригада</div>
+  <div id="bigmap-hint" class="mono hidden">TAB</div>
+</div>
+
+<!-- Меню -->
+<div id="menu">
+  <div class="menu-inner">
+    <h1>DEEP<span>SALVAGE</span></h1>
+    <p class="sub">кооперативный физический хоррор · 1–4 сальважёра · тёмные уровни, хрупкая добыча, что-то ещё внизу</p>
+
+    <div id="menu-fields">
+      <label>ПОЗЫВНОЙ
+        <input id="name-input" maxlength="16" placeholder="Сальважер" autocomplete="off" />
+      </label>
+      <label>КОД КОМНАТЫ (одинаковый у друзей)
+        <input id="room-input" maxlength="8" placeholder="MAIN" autocomplete="off" />
+      </label>
+      <button id="play-btn">В ШАХТУ</button>
+      <div id="join-url" class="mono hidden"></div>
+    </div>
+
+    <div class="controls">
+      <div><b>WASD</b> движение</div><div><b>Shift</b> бег</div>
+      <div><b>Ctrl</b> красться (тише)</div><div><b>Space</b> прыжок</div>
+      <div><b>E</b> взять / положить в приёмник / поднять напарника</div>
+      <div><b>ЛКМ</b> швырнуть · <b>ПКМ</b> аккуратно положить</div>
+      <div><b>F</b> фонарь (свет = вас видно)</div><div><b>Enter</b> чат · <b>Tab</b> бригада</div>
+    </div>
+    <div class="foot mono">Версия 1.0 · сервер и клиент в одном репозитории · <span id="packs">моды: —</span></div>
+  </div>
+</div>
+
+<!-- Оверлеи раунда -->
+<div id="overlay" class="hidden">
+  <div class="panel">
+    <h2 id="ov-title">СМЕНА ЗАВЕРШЕНА</h2>
+    <p id="ov-text"></p>
+    <div id="ov-stats" class="mono"></div>
+    <button id="ov-btn" class="hidden">СЛЕДУЮЩАЯ СМЕНА</button>
+    <div id="ov-wait" class="mono hidden">ожидаем хоста…</div>
+  </div>
+</div>
+
+<div id="dead" class="hidden">
+  <div class="dead-inner">
+    <h2>ВАС БОЛЬШЕ НЕТ</h2>
+    <p id="dead-sub" class="mono">наблюдение</p>
+  </div>
+</div>
+
+<div id="loading">ЗАГРУЗКА ШАХТЫ…</div>
+
+<script type="module" src="/js/main.js"></script>
+</body>
+</html>
